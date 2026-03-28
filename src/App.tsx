@@ -53,12 +53,11 @@ export default function App() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center justify-center gap-2 mb-2"
         >
-          <Languages className="w-6 h-6 text-orange-600" />
-          <h1 className="font-display text-3xl md:text-4xl text-gray-900 tracking-wide">
-            ពុទ្ធិ <span className="font-sans font-light italic text-gray-400 ml-2">Puthy</span>
+          <h1 className="font-display text-3xl md:text-4xl text-black">
+            ពុទ្ធិ <span className="font-sans font-light text-black ml-2">Puthy</span>
           </h1>
         </motion.div>
-        <p className="text-sm text-gray-500 uppercase tracking-widest font-medium">
+        <p className="text-sm text-black uppercase tracking-widest font-medium">
           Khmer & English Wisdom
         </p>
       </header>
@@ -75,8 +74,8 @@ export default function App() {
               disabled={loading}
               className={`px-4 py-2 rounded-full text-sm transition-all duration-300 border ${
                 category === cat.id
-                  ? 'bg-gray-900 text-white border-gray-900 shadow-lg'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
+                  ? 'bg-yellow-400 text-black border-yellow-400 shadow-lg'
+                  : 'bg-white text-black border-gray-200 hover:border-black'
               }`}
             >
               <span className="mr-1">{cat.khmer}</span>
@@ -97,8 +96,8 @@ export default function App() {
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center gap-4"
               >
-                <RefreshCw className="w-8 h-8 text-orange-500 animate-spin" />
-                <p className="text-gray-400 font-medium animate-pulse">កំពុងស្វែងរក... Seeking wisdom...</p>
+                <RefreshCw className="w-8 h-8 text-black animate-spin" />
+                <p className="text-black font-medium animate-pulse">កំពុងស្វែងរក... Seeking wisdom...</p>
               </motion.div>
             ) : quote ? (
               <motion.div
@@ -110,17 +109,17 @@ export default function App() {
                 className="relative z-10"
               >
                 <div className="space-y-8">
-                  <h2 className="text-2xl md:text-4xl font-medium leading-relaxed text-gray-800 text-center">
+                  <h2 className="text-2xl md:text-4xl font-medium leading-relaxed text-black text-center">
                     {quote.khmer}
                   </h2>
                   <div className="h-px w-24 bg-gradient-to-r from-transparent via-gray-200 to-transparent mx-auto" />
-                  <p className="text-lg md:text-xl italic text-gray-500 text-center font-light leading-relaxed">
+                  <p className="text-lg md:text-xl italic text-black text-center font-light leading-relaxed">
                     "{quote.english}"
                   </p>
                 </div>
                 
                 <footer className="mt-12 text-center">
-                  <p className="text-sm font-medium text-gray-400 uppercase tracking-[0.2em]">
+                  <p className="text-sm font-medium text-black uppercase tracking-[0.2em]">
                     — {quote.author} —
                   </p>
                 </footer>
@@ -133,16 +132,16 @@ export default function App() {
           <button
             onClick={() => fetchNewQuote()}
             disabled={loading}
-            className="group flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl shadow-orange-200 transition-all active:scale-95 disabled:opacity-50"
+            className="group flex flex-col items-center bg-yellow-400 hover:bg-yellow-500 text-black px-10 py-4 rounded-2xl font-semibold shadow-xl shadow-yellow-100 transition-all active:scale-95 disabled:opacity-50"
           >
-            <Sparkles className={`w-5 h-5 ${loading ? 'animate-pulse' : 'group-hover:rotate-12 transition-transform'}`} />
-            <span>Generate New Quote</span>
+            <span className="text-lg">បង្កើតសម្រង់សម្តីថ្មី</span>
+            <span className="text-[10px] uppercase tracking-widest font-normal">Generate New Quote</span>
           </button>
           
           <button
             onClick={handleCopy}
             disabled={!quote || loading}
-            className="p-4 bg-white border border-gray-200 rounded-2xl text-gray-500 hover:text-gray-900 hover:border-gray-900 transition-all active:scale-95 disabled:opacity-50"
+            className="p-4 bg-white border border-gray-200 rounded-2xl text-black hover:border-black transition-all active:scale-95 disabled:opacity-50"
             title="Copy to clipboard"
           >
             {copied ? <Check className="w-6 h-6 text-green-500" /> : <Copy className="w-6 h-6" />}
@@ -150,8 +149,8 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="mt-auto pt-12 text-gray-400 text-[10px] uppercase tracking-[0.3em] font-medium">
-        Powered by Gemini AI • Khmer-English Edition
+      <footer className="mt-auto pt-12 text-black text-[10px] uppercase tracking-[0.3em] font-medium">
+        Powered by mebon.io • Khmer-English Edition
       </footer>
     </div>
   );

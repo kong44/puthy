@@ -1,11 +1,11 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Moulpali&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dangrek&family=Inter:wght@400;500;600&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Moul&display=swap');
 
 @theme {
   --font-sans: "Inter", "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Moulpali", serif;
+  --font-display: "Dangrek" , ui-sans-serif;
 }
 
 body {
-  @apply bg-[#fdfcfb] text-[#2c2c2c] antialiased;
+  @apply bg-[#fdfcfb] text-black antialiased;
 }
