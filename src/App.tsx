@@ -78,7 +78,7 @@ export default function App() {
               disabled={loading}
               className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm transition-all duration-300 border ${
                 category === cat.id
-                  ? 'bg-yellow-400 text-black border-yellow-400 shadow-lg'
+                  ? 'bg-yellow-400 text-black border-yellow-400'
                   : 'bg-white text-black border-gray-200 hover:border-black'
               }`}
             >
@@ -136,7 +136,7 @@ export default function App() {
           <button
             onClick={() => fetchNewQuote()}
             disabled={loading}
-            className="w-full sm:w-auto group flex flex-col items-center bg-yellow-400 hover:bg-yellow-500 text-black px-8 md:px-10 py-3 md:py-4 rounded-xl md:rounded-2xl font-semibold shadow-xl shadow-yellow-100 transition-all active:scale-95 disabled:opacity-50"
+            className="w-full sm:w-auto group flex flex-col items-center bg-yellow-400 hover:bg-yellow-500 text-black px-8 md:px-10 py-3 md:py-4 rounded-xl md:rounded-2xl font-semibold transition-all active:scale-95 disabled:opacity-50"
           >
             <span className="text-base md:text-lg">បង្កើតសម្រង់សម្តីថ្មី</span>
             <span className="text-[8px] md:text-[10px] uppercase tracking-widest font-normal">Generate New Quote</span>
