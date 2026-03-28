@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Quote, generateQuote } from './services/geminiService';
-import { Sparkles, Languages, RefreshCw, Quote as QuoteIcon, Share2, Copy, Check } from 'lucide-react';
+import { Quote, generateQuote, generateAudio } from './services/geminiService';
+import { Sparkles, Languages, RefreshCw, Quote as QuoteIcon, Share2, Copy, Check, Volume2, VolumeX, Loader2 } from 'lucide-react';
 
 const CATEGORIES = [
   { id: 'wisdom', label: 'Wisdom', khmer: 'បញ្ញា' },
@@ -20,9 +20,13 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState('wisdom');
   const [copied, setCopied] = useState(false);
+  const [isReading, setIsReading] = useState(false);
+  const audioSourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
 
   const fetchNewQuote = useCallback(async (cat: string = category) => {
     setLoading(true);
+    stopAudio();
     try {
       const newQuote = await generateQuote(cat);
       setQuote(newQuote);
@@ -35,7 +39,91 @@ export default function App() {
 
   useEffect(() => {
     fetchNewQuote();
+    return () => stopAudio();
   }, []);
+
+  const stopAudio = () => {
+    if (audioSourceRef.current) {
+      try {
+        audioSourceRef.current.stop();
+      } catch (e) {}
+      audioSourceRef.current = null;
+    }
+    setIsReading(false);
+  };
+
+  const handleListen = async () => {
+    if (isReading) {
+      stopAudio();
+      return;
+    }
+
+    if (!quote) return;
+
+    setIsReading(true);
+    const textToRead = `${quote.khmer}. ${quote.english}`;
+    
+    try {
+      const base64Audio = await generateAudio(textToRead);
+      if (!base64Audio) {
+        setIsReading(false);
+        return;
+      }
+
+      const binaryString = atob(base64Audio);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      
+      const pcmData = new Int16Array(bytes.buffer);
+      const floatData = new Float32Array(pcmData.length);
+      for (let i = 0; i < pcmData.length; i++) {
+        floatData[i] = pcmData[i] / 32768;
+      }
+      
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      
+      const audioCtx = audioContextRef.current;
+      const buffer = audioCtx.createBuffer(1, floatData.length, 24000);
+      buffer.getChannelData(0).set(floatData);
+      
+      const source = audioCtx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(audioCtx.destination);
+      source.onended = () => setIsReading(false);
+      
+      audioSourceRef.current = source;
+      source.start();
+    } catch (error) {
+      console.error("Audio playback error:", error);
+      setIsReading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    if (!quote) return;
+    const shareData = {
+      title: 'Puthy Wisdom',
+      text: `${quote.khmer}\n${quote.english}\n— ${quote.author}`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback for browsers that don't support Web Share API
+        const mailtoLink = `mailto:?subject=Puthy Wisdom Quote&body=${encodeURIComponent(shareData.text + '\n\n' + shareData.url)}`;
+        window.location.href = mailtoLink;
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
 
   const handleCopy = () => {
     if (!quote) return;
@@ -91,6 +179,25 @@ export default function App() {
         <div className="relative bg-white border border-gray-100 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-16 shadow-2xl shadow-gray-200/50 min-h-[320px] md:min-h-[400px] flex flex-col justify-center">
           <QuoteIcon className="absolute top-4 left-4 md:top-8 md:left-8 w-8 h-8 md:w-12 md:h-12 text-gray-100 -z-0" />
           
+          <div className="absolute top-4 right-4 md:top-8 md:right-8 flex gap-2 z-20">
+            <button
+              onClick={handleListen}
+              disabled={!quote || loading}
+              className={`p-2 rounded-full transition-all ${isReading ? 'bg-yellow-400 text-black' : 'bg-gray-50 text-gray-400 hover:text-black'}`}
+              title={isReading ? "Stop listening" : "Listen to quote"}
+            >
+              {isReading ? <VolumeX className="w-5 h-5 md:w-6 md:h-6" /> : <Volume2 className="w-5 h-5 md:w-6 md:h-6" />}
+            </button>
+            <button
+              onClick={handleShare}
+              disabled={!quote || loading}
+              className="p-2 rounded-full bg-gray-50 text-gray-400 hover:text-black transition-all"
+              title="Share quote"
+            >
+              <Share2 className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+          </div>
+
           <AnimatePresence mode="wait">
             {loading ? (
               <motion.div
@@ -150,6 +257,16 @@ export default function App() {
           >
             {copied ? <Check className="w-5 h-5 md:w-6 md:h-6 text-green-500" /> : <Copy className="w-5 h-5 md:w-6 md:h-6" />}
             <span className="sm:hidden text-sm font-medium">Copy Quote</span>
+          </button>
+
+          <button
+            onClick={handleShare}
+            disabled={!quote || loading}
+            className="w-full sm:w-auto p-3 md:p-4 bg-white border border-gray-200 rounded-xl md:rounded-2xl text-black hover:border-black transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+            title="Share quote"
+          >
+            <Share2 className="w-5 h-5 md:w-6 md:h-6" />
+            <span className="sm:hidden text-sm font-medium">Share Quote</span>
           </button>
         </div>
       </main>
