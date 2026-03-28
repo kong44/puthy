@@ -6,9 +6,13 @@ import { Sparkles, Languages, RefreshCw, Quote as QuoteIcon, Share2, Copy, Check
 const CATEGORIES = [
   { id: 'wisdom', label: 'Wisdom', khmer: 'បញ្ញា' },
   { id: 'motivation', label: 'Motivation', khmer: 'ការលើកទឹកចិត្ត' },
-  { id: 'love', label: 'Love', khmer: 'សេចក្តីស្រឡាញ់' },
+  { id: 'peace', label: 'Peace', khmer: 'សន្តិភាព' },
+  { id: 'mindfulness', label: 'Mindfulness', khmer: 'ស្មារតី' },
+  { id: 'family', label: 'Family', khmer: 'គ្រួសារ' },
   { id: 'nature', label: 'Nature', khmer: 'ធម្មជាតិ' },
-  { id: 'success', label: 'Success', khmer: 'ភាពជោគជ័យ' },
+  { id: 'education', label: 'Education', khmer: 'ការអប់រំ' },
+  { id: 'compassion', label: 'Compassion', khmer: 'សេចក្តីមេត្តា' },
+  { id: 'happiness', label: 'Happiness', khmer: 'សុភមង្គល' },
 ];
 
 export default function App() {
