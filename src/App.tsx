@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { toPng } from 'html-to-image';
 import { Quote, generateQuote } from './services/geminiService';
 import { Sparkles, Languages, RefreshCw, Quote as QuoteIcon, Share2, Copy, Check, Loader2, Image as ImageIcon, Download } from 'lucide-react';
+import { initGA, trackPageView, trackEvent } from './services/analytics';
 
 const CATEGORIES = [
   { id: 'wisdom', label: 'Wisdom', khmer: 'បញ្ញា' },
@@ -25,6 +26,7 @@ export default function App() {
 
   const fetchNewQuote = useCallback(async (cat: string = category) => {
     setLoading(true);
+    trackEvent('Quote', 'Generate', cat);
     try {
       const newQuote = await generateQuote(cat);
       setQuote(newQuote);
@@ -36,17 +38,20 @@ export default function App() {
   }, [category]);
 
   useEffect(() => {
+    initGA();
+    trackPageView(window.location.pathname);
     fetchNewQuote();
   }, []);
 
   const handleDownloadImage = async () => {
     if (!cardRef.current || !quote) return;
+    trackEvent('Quote', 'Download', quote.author);
     
     try {
       setLoading(true);
       const dataUrl = await toPng(cardRef.current, {
         cacheBust: true,
-        backgroundColor: 'transparent',
+        backgroundColor: '#ffffff',
       });
       
       const link = document.createElement('a');
@@ -62,6 +67,7 @@ export default function App() {
 
   const handleShare = async () => {
     if (!quote || !cardRef.current) return;
+    trackEvent('Quote', 'Share', quote.author);
 
     try {
       setLoading(true);
@@ -69,7 +75,7 @@ export default function App() {
       // 1. Generate PNG from the card
       const dataUrl = await toPng(cardRef.current, {
         cacheBust: true,
-        backgroundColor: 'transparent',
+        backgroundColor: '#ffffff',
       });
 
       // 2. Convert dataUrl to File
@@ -105,6 +111,7 @@ export default function App() {
 
   const handleCopy = () => {
     if (!quote) return;
+    trackEvent('Quote', 'Copy', quote.author);
     const text = `${quote.khmer}\n${quote.english}\n— ${quote.author}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -156,7 +163,7 @@ export default function App() {
 
         <div 
           ref={cardRef}
-          className="relative bg-white border border-gray-100 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-16 shadow-2xl shadow-gray-200/50 min-h-[320px] md:min-h-[400px] flex flex-col justify-center overflow-hidden"
+          className="relative bg-white border border-gray-100 rounded-[1.5rem] md:rounded-[2rem] p-6 pb-12 md:p-16 shadow-2xl shadow-gray-200/50 min-h-[380px] md:min-h-[400px] flex flex-col justify-center overflow-hidden"
         >
           <QuoteIcon className="absolute top-4 left-4 md:top-8 md:left-8 w-8 h-8 md:w-12 md:h-12 text-gray-100 -z-0" />
           
@@ -211,7 +218,7 @@ export default function App() {
             ) : null}
           </AnimatePresence>
 
-          <div className="absolute bottom-4 left-0 right-0 text-center z-0 opacity-20 pointer-events-none">
+          <div className="absolute bottom-3 md:bottom-4 left-0 right-0 text-center z-0 opacity-20 pointer-events-none">
             <p className="text-[8px] md:text-[10px] uppercase tracking-[0.3em] font-medium text-black">
               Powered by mebon.io
             </p>
