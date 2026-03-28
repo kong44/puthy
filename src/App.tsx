@@ -220,7 +220,7 @@ export default function App() {
                 className="relative z-10"
               >
                 <div className="space-y-6 md:space-y-8">
-                  <h2 className="text-xl md:text-4xl font-display leading-relaxed text-black text-center px-2">
+                  <h2 className="text-xl md:text-4xl font-display leading-loose text-black text-center px-2">
                     {quote.khmer}
                   </h2>
                   <div className="h-px w-16 md:w-24 bg-gradient-to-r from-transparent via-gray-200 to-transparent mx-auto" />
