@@ -46,10 +46,7 @@ export default function App() {
       setLoading(true);
       const dataUrl = await toPng(cardRef.current, {
         cacheBust: true,
-        backgroundColor: '#ffffff',
-        style: {
-          borderRadius: '0',
-        }
+        backgroundColor: 'transparent',
       });
       
       const link = document.createElement('a');
@@ -72,7 +69,7 @@ export default function App() {
       // 1. Generate PNG from the card
       const dataUrl = await toPng(cardRef.current, {
         cacheBust: true,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'transparent',
       });
 
       // 2. Convert dataUrl to File
@@ -165,14 +162,6 @@ export default function App() {
           
           <div className="absolute top-4 right-4 md:top-8 md:right-8 flex gap-2 z-20">
             <button
-              onClick={handleDownloadImage}
-              disabled={!quote || loading}
-              className="p-2 rounded-full bg-gray-50 text-gray-400 hover:text-black transition-all"
-              title="Save as Photo"
-            >
-              <Download className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-            <button
               onClick={handleShare}
               disabled={!quote || loading}
               className="p-2 rounded-full bg-gray-50 text-gray-400 hover:text-black transition-all"
@@ -203,7 +192,7 @@ export default function App() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="relative z-10"
               >
-                <div className="space-y-6 md:space-y-8 my-12">
+                <div className="space-y-6 md:space-y-8 mt-12">
                   <h2 className="text-xl md:text-4xl font-display leading-loose text-black text-center px-2">
                     {quote.khmer}
                   </h2>
@@ -221,6 +210,12 @@ export default function App() {
               </motion.div>
             ) : null}
           </AnimatePresence>
+
+          <div className="absolute bottom-4 left-0 right-0 text-center z-0 opacity-20 pointer-events-none">
+            <p className="text-[8px] md:text-[10px] uppercase tracking-[0.3em] font-medium text-black">
+              Powered by mebon.io
+            </p>
+          </div>
         </div>
 
         <div className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
