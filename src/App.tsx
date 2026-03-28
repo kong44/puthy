@@ -15,6 +15,7 @@ const CATEGORIES = [
   { id: 'education', label: 'Education', khmer: 'ការអប់រំ' },
   { id: 'compassion', label: 'Compassion', khmer: 'សេចក្តីមេត្តា' },
   { id: 'happiness', label: 'Happiness', khmer: 'សុភមង្គល' },
+  { id: 'resilience', label: 'Resilience', khmer: 'ភាពធន់' },
 ];
 
 export default function App() {
