@@ -219,7 +219,7 @@ export default function App() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="relative z-10"
               >
-                <div className="space-y-6 md:space-y-8">
+                <div className="space-y-6 md:space-y-8 my-12">
                   <h2 className="text-xl md:text-4xl font-display leading-loose text-black text-center px-2">
                     {quote.khmer}
                   </h2>
