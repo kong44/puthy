@@ -63,7 +63,7 @@ export default function App() {
       </header>
 
       <main className="w-full max-w-3xl">
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 mb-6 md:mb-8">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
@@ -72,20 +72,20 @@ export default function App() {
                 fetchNewQuote(cat.id);
               }}
               disabled={loading}
-              className={`px-4 py-2 rounded-full text-sm transition-all duration-300 border ${
+              className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm transition-all duration-300 border ${
                 category === cat.id
                   ? 'bg-yellow-400 text-black border-yellow-400 shadow-lg'
                   : 'bg-white text-black border-gray-200 hover:border-black'
               }`}
             >
               <span className="mr-1">{cat.khmer}</span>
-              <span className="opacity-60 text-[10px] uppercase tracking-tighter">{cat.label}</span>
+              <span className="opacity-60 text-[8px] md:text-[10px] uppercase tracking-tighter">{cat.label}</span>
             </button>
           ))}
         </div>
 
-        <div className="relative bg-white border border-gray-100 rounded-[2rem] p-8 md:p-16 shadow-2xl shadow-gray-200/50 min-h-[400px] flex flex-col justify-center">
-          <QuoteIcon className="absolute top-8 left-8 w-12 h-12 text-orange-50/80 -z-0" />
+        <div className="relative bg-white border border-gray-100 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-16 shadow-2xl shadow-gray-200/50 min-h-[320px] md:min-h-[400px] flex flex-col justify-center">
+          <QuoteIcon className="absolute top-4 left-4 md:top-8 md:left-8 w-8 h-8 md:w-12 md:h-12 text-gray-100 -z-0" />
           
           <AnimatePresence mode="wait">
             {loading ? (
@@ -96,8 +96,8 @@ export default function App() {
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center gap-4"
               >
-                <RefreshCw className="w-8 h-8 text-black animate-spin" />
-                <p className="text-black font-medium animate-pulse">កំពុងស្វែងរក... Seeking wisdom...</p>
+                <RefreshCw className="w-6 h-6 md:w-8 md:h-8 text-black animate-spin" />
+                <p className="text-black text-sm md:text-base font-medium animate-pulse">កំពុងស្វែងរក... Seeking wisdom...</p>
               </motion.div>
             ) : quote ? (
               <motion.div
@@ -108,18 +108,18 @@ export default function App() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="relative z-10"
               >
-                <div className="space-y-8">
-                  <h2 className="text-2xl md:text-4xl font-medium leading-relaxed text-black text-center">
+                <div className="space-y-6 md:space-y-8">
+                  <h2 className="text-xl md:text-4xl font-medium leading-relaxed text-black text-center px-2">
                     {quote.khmer}
                   </h2>
-                  <div className="h-px w-24 bg-gradient-to-r from-transparent via-gray-200 to-transparent mx-auto" />
-                  <p className="text-lg md:text-xl italic text-black text-center font-light leading-relaxed">
+                  <div className="h-px w-16 md:w-24 bg-gradient-to-r from-transparent via-gray-200 to-transparent mx-auto" />
+                  <p className="text-base md:text-xl italic text-black text-center font-light leading-relaxed px-2">
                     "{quote.english}"
                   </p>
                 </div>
                 
-                <footer className="mt-12 text-center">
-                  <p className="text-sm font-medium text-black uppercase tracking-[0.2em]">
+                <footer className="mt-8 md:mt-12 text-center">
+                  <p className="text-[10px] md:text-sm font-medium text-black uppercase tracking-[0.2em]">
                     — {quote.author} —
                   </p>
                 </footer>
@@ -128,28 +128,29 @@ export default function App() {
           </AnimatePresence>
         </div>
 
-        <div className="mt-12 flex items-center justify-center gap-4">
+        <div className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={() => fetchNewQuote()}
             disabled={loading}
-            className="group flex flex-col items-center bg-yellow-400 hover:bg-yellow-500 text-black px-10 py-4 rounded-2xl font-semibold shadow-xl shadow-yellow-100 transition-all active:scale-95 disabled:opacity-50"
+            className="w-full sm:w-auto group flex flex-col items-center bg-yellow-400 hover:bg-yellow-500 text-black px-8 md:px-10 py-3 md:py-4 rounded-xl md:rounded-2xl font-semibold shadow-xl shadow-yellow-100 transition-all active:scale-95 disabled:opacity-50"
           >
-            <span className="text-lg">បង្កើតសម្រង់សម្តីថ្មី</span>
-            <span className="text-[10px] uppercase tracking-widest font-normal">Generate New Quote</span>
+            <span className="text-base md:text-lg">បង្កើតសម្រង់សម្តីថ្មី</span>
+            <span className="text-[8px] md:text-[10px] uppercase tracking-widest font-normal">Generate New Quote</span>
           </button>
           
           <button
             onClick={handleCopy}
             disabled={!quote || loading}
-            className="p-4 bg-white border border-gray-200 rounded-2xl text-black hover:border-black transition-all active:scale-95 disabled:opacity-50"
+            className="w-full sm:w-auto p-3 md:p-4 bg-white border border-gray-200 rounded-xl md:rounded-2xl text-black hover:border-black transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
             title="Copy to clipboard"
           >
-            {copied ? <Check className="w-6 h-6 text-green-500" /> : <Copy className="w-6 h-6" />}
+            {copied ? <Check className="w-5 h-5 md:w-6 md:h-6 text-green-500" /> : <Copy className="w-5 h-5 md:w-6 md:h-6" />}
+            <span className="sm:hidden text-sm font-medium">Copy Quote</span>
           </button>
         </div>
       </main>
 
-      <footer className="mt-auto pt-12 text-black text-[10px] uppercase tracking-[0.3em] font-medium">
+      <footer className="mt-auto pt-12 text-black text-[8px] md:text-[10px] uppercase tracking-[0.3em] font-medium">
         Powered by mebon.io • Khmer-English Edition
       </footer>
     </div>

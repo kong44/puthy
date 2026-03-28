@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Dangrek&family=Inter:wght@400;500;600&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Moul&display=swap');
 
 @theme {
   --font-sans: "Inter", "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
